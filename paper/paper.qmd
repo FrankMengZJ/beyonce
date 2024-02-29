@@ -31,24 +31,42 @@ library(tidyverse)
 library(xml2)
 ```
 
-
 # Introduction
 
 You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
 
 The remainder of this paper is structured as follows. @sec-data....
 
-
 ```{r}
 NASA <- GET("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&date=2019-07-19")
 
-content(NASA)$title
+#content(NASA)$title
 knitr::include_graphics(content(NASA)$url)
 ```
 
+```{r}
+#| label: Beyonce
+beyonce <-readRDS(file=here("data/raw_data/beyonce.rds"))
+
+beyonce <- as_tibble(beyonce)
+
+beyonce |>
+  mutate(album_release_date = ymd(album_release_date)) |>
+  ggplot(aes(
+    x = album_release_date,
+    y = duration_ms,
+    group = album_release_date
+  )) +
+  geom_boxplot() +
+  geom_jitter(alpha = 0.5, width = 0.3, height = 0) +
+  theme_minimal() +
+  labs(
+    x = "Album release date",
+    y = "Duration of song (ms)"
+  )
+```
+
+
 \newpage
 
-
 # References
-
-
